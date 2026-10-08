@@ -93,12 +93,12 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_listWithArguments_throwsParseException() {
-        assertThrows(ParseException.class, ListCommand.MESSAGE_INVALID_FORMAT,
-                () -> parser.parseCommand("list 3"));
-        assertThrows(ParseException.class, ListCommand.MESSAGE_INVALID_FORMAT,
-                () -> parser.parseCommand("list abc"));
-        assertThrows(ParseException.class, ListCommand.MESSAGE_INVALID_FORMAT,
-                () -> parser.parseCommand("   list abc"));
+        assertThrows(ParseException.class, ListCommand.MESSAGE_INVALID_FORMAT, ()
+                -> parser.parseCommand("list 3"));
+        assertThrows(ParseException.class, ListCommand.MESSAGE_INVALID_FORMAT, ()
+                -> parser.parseCommand("list abc"));
+        assertThrows(ParseException.class, ListCommand.MESSAGE_INVALID_FORMAT, ()
+                -> parser.parseCommand("   list abc"));
     }
 
     @Test

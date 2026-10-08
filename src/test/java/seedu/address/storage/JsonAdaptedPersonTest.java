@@ -11,11 +11,17 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
+import seedu.address.testutil.PersonBuilder;
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
@@ -36,6 +42,41 @@ public class JsonAdaptedPersonTest {
     public void toModelType_validPersonDetails_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(BENSON);
         assertEquals(BENSON, person.toModelType());
+    }
+
+    @Test
+    public void fromJsonString_personWithRemark_preservesRemark() throws Exception {
+        Person expected = new PersonBuilder(BENSON).withRemark("Call next week").build();
+        String json = JsonUtil.toJsonString(new JsonAdaptedPerson(expected));
+
+        Person actual = JsonUtil.fromJsonString(json, JsonAdaptedPerson.class).toModelType();
+
+        assertEquals(expected, actual);
+        assertEquals(expected.getRemark(), actual.getRemark());
+    }
+
+    @Test
+    public void fromJsonString_missingRemark_defaultsToEmptyRemark() throws Exception {
+        String json = JsonUtil.toJsonString(new JsonAdaptedPerson(BENSON));
+        ObjectNode personJson = JsonUtil.fromJsonString(json, ObjectNode.class);
+        personJson.remove("remark");
+
+        Person actual = JsonUtil.fromJsonString(personJson.toString(), JsonAdaptedPerson.class).toModelType();
+
+        assertEquals(BENSON, actual);
+        assertEquals(new Remark(""), actual.getRemark());
+    }
+
+    @Test
+    public void fromJsonString_nullRemark_defaultsToEmptyRemark() throws Exception {
+        String json = JsonUtil.toJsonString(new JsonAdaptedPerson(BENSON));
+        ObjectNode personJson = JsonUtil.fromJsonString(json, ObjectNode.class);
+        personJson.putNull("remark");
+
+        Person actual = JsonUtil.fromJsonString(personJson.toString(), JsonAdaptedPerson.class).toModelType();
+
+        assertEquals(BENSON, actual);
+        assertEquals(new Remark(""), actual.getRemark());
     }
 
     @Test
