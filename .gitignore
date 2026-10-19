@@ -23,6 +23,7 @@ docs/_site/
 
 # AI Agents
 AGENTS.md
+!/AGENTS.md
 CLAUDE.md
 /.claude/
 /.codex/
